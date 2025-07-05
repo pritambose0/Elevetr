@@ -21,7 +21,6 @@ import {
   CalendarIcon,
   Flame,
   Save,
-  X,
 } from "lucide-react";
 
 type Topic = {

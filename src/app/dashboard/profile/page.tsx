@@ -35,7 +35,10 @@ export default function ProfilePage() {
 
   const handleChange = (
     field: keyof typeof profile,
-    value: any,
+    value:
+      | string
+      | string[]
+      | { degree: string; institution: string; year: string }[],
     subfield?: string
   ) => {
     if (subfield) {

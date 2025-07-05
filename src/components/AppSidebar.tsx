@@ -5,7 +5,6 @@ import {
   BookOpen,
   BarChart3,
   Settings,
-  HelpCircle,
   LogOut,
 } from "lucide-react";
 import Link from "next/link";

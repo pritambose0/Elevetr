@@ -275,7 +275,10 @@ export default function Home() {
             {testimonials.map((t, i) => (
               <Card key={i}>
                 <CardContent className="p-6 space-y-3">
-                  <p className="text-muted-foreground italic">"{t.quote}"</p>
+                  <p className="text-muted-foreground italic">
+                    {t.quote.replace(/’/g, "\u2019")}
+                  </p>
+
                   <p className="font-semibold text-sm text-primary">
                     — {t.name}
                   </p>
@@ -291,7 +294,8 @@ export default function Home() {
         <div className="max-w-3xl mx-auto space-y-8 px-4">
           <h2 className="text-4xl font-bold">Your Growth Starts Here</h2>
           <p className="text-lg text-muted-foreground">
-            Don’t just learn — track it, complete it, and feel the momentum.
+            Don&apos;t just learn — track it, complete it, and feel the
+            momentum.
           </p>
           <Link href="/dashboard">
             <Button size="lg">Start Tracking — Free Forever</Button>

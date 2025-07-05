@@ -47,7 +47,9 @@ export default function Dashboard() {
             Welcome back, Pritam👋
           </h1>
           <p className="text-muted-foreground text-lg mt-2">
-            Your progress matters. Let's keep learning and leveling up.
+            <p className="text-muted-foreground text-lg mt-2">
+              Your progress matters. Let&rsquo;s keep learning and leveling up.
+            </p>
           </p>
         </div>
 

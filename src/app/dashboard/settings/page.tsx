@@ -24,14 +24,14 @@ export default function SettingsPage() {
 
   const handleChange = (
     field: keyof typeof settings,
-    value: any,
+    value: string | boolean | Record<string, boolean>,
     subfield?: string
   ) => {
     if (subfield) {
       setSettings((prev) => ({
         ...prev,
         [field]: {
-          ...(prev[field] as any),
+          ...(prev[field] as Record<string, boolean>),
           [subfield]: value,
         },
       }));
