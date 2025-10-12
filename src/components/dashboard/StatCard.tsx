@@ -1,4 +1,3 @@
-// components/dashboard/StatCard.tsx
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { format, subDays, addDays } from "date-fns";
+import { useState } from "react";
+import { format } from "date-fns";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
 import {
   PlusCircle,
   Trash2,
@@ -31,40 +32,58 @@ type Topic = {
   timeSpent: string;
 };
 
-export default function SubjectDetailsPage() {
-  const [topics, setTopics] = useState<Topic[]>([]);
-  const [newTitle, setNewTitle] = useState("");
-  const [editingTitle, setEditingTitle] = useState(false);
-  const [subjectName, setSubjectName] = useState("Data Structures");
+interface SubjectType {
+  name: string;
+  progress: number;
+  done: number;
+  total: number;
+  topics: Topic[];
+}
 
-  // Mock some sample topics on first load
-  useEffect(() => {
-    const now = new Date();
-    const randomTopics = [
+export default function SubjectDetailsPage({
+  subject = {
+    name: "Data Structures",
+    progress: 75,
+    total: 20,
+    done: 15,
+    topics: [
       {
-        title: "Arrays & Strings",
+        title: "Arrays",
         completed: true,
-        notes: "Revise sliding window technique",
-        date: subDays(now, 3),
-        timeSpent: "1h",
+        notes: "Focus on sliding window",
+        date: new Date(),
+        timeSpent: "45m",
       },
       {
         title: "Linked Lists",
         completed: false,
-        notes: "",
-        date: null,
-        timeSpent: "",
+        notes: "Focus on sliding window",
+        date: new Date(),
+        timeSpent: "45m",
       },
       {
-        title: "Stacks & Queues",
-        completed: false,
-        notes: "",
-        date: addDays(now, 2),
-        timeSpent: "",
+        title: "Stacks",
+        completed: true,
+        notes: "Focus on sliding window",
+        date: new Date(),
+        timeSpent: "45m",
       },
-    ];
-    setTopics(randomTopics);
-  }, []);
+      {
+        title: "Queues",
+        completed: true,
+        notes: "Focus on sliding window",
+        date: new Date(),
+        timeSpent: "45m",
+      },
+    ],
+  },
+}: {
+  subject: SubjectType;
+}) {
+  const [topics, setTopics] = useState<Topic[]>(subject?.topics || []);
+  const [newTitle, setNewTitle] = useState("");
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [subjectName, setSubjectName] = useState(subject?.name);
 
   const addTopic = () => {
     if (!newTitle.trim()) return;
@@ -97,8 +116,11 @@ export default function SubjectDetailsPage() {
     setTopics(updated);
   };
 
-  const completedCount = topics.filter((t) => t.completed).length;
-  const progress = Math.round((completedCount / topics.length) * 100);
+  const completedCount = topics?.filter((t) => t.completed).length;
+  const progress =
+    topics?.length > 0
+      ? Math.round((completedCount / topics?.length) * 100)
+      : 0;
 
   const handleSubjectEdit = () => setEditingTitle(true);
   const handleSubjectSave = () => setEditingTitle(false);
@@ -157,7 +179,7 @@ export default function SubjectDetailsPage() {
         <CardContent>
           <Progress value={progress} className="h-4" />
           <p className="text-sm mt-2 text-muted-foreground">
-            {completedCount}/{topics.length} topics completed ({progress}%)
+            {completedCount}/{topics?.length} topics completed ({progress}%)
           </p>
         </CardContent>
       </Card>
@@ -177,7 +199,7 @@ export default function SubjectDetailsPage() {
 
       {/* Topics List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {topics.map((topic, idx) => (
+        {topics?.map((topic, idx) => (
           <Card key={idx} className="rounded-xl shadow-sm">
             <CardHeader className="flex justify-between items-start">
               <div className="flex gap-2 items-center">

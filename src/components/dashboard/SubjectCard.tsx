@@ -1,15 +1,23 @@
-// components/dashboard/SubjectCard.tsx
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
-interface SubjectCardProps {
+type Topic = {
+  title: string;
+  completed: boolean;
+  notes: string;
+  date: Date | null;
+  timeSpent: string;
+};
+
+interface SubjectType {
   name: string;
   progress: number;
   done: number;
   total: number;
+  topics: Topic[];
 }
 
-export function SubjectCard({ name, progress, done, total }: SubjectCardProps) {
+export function SubjectCard({ name, progress, done, total }: SubjectType) {
   return (
     <Card className="hover:shadow-lg transition-shadow">
       <CardHeader>
