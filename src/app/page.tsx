@@ -119,7 +119,7 @@ export default function Home() {
   return (
     <main className="min-h-dvh text-foreground bg-background">
       {/* NAVBAR */}
-      <Navbar isLoggedIn={true} />
+      <Navbar isLoggedIn={false} />
 
       {/* Hero */}
       <section className="relative py-20 sm:py-32 bg-muted/5 text-center overflow-hidden">
