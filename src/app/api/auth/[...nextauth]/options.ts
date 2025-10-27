@@ -1,10 +1,10 @@
 import connectDB from "@/lib/connectDB";
 import UserModel from "@/models/User";
-import { NextAuthOptions } from "next-auth";
+import { AuthOptions, User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -14,13 +14,17 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
 
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials): Promise<NextAuthUser> {
+        if (!credentials?.email || !credentials.password) {
+          throw new Error("Email and password are required");
+        }
+
         await connectDB();
 
         try {
           const user = await UserModel.findOne({
             email: credentials.email,
-          });
+          }).select("+password");
 
           if (!user) {
             throw new Error("User not found with this email");
@@ -35,7 +39,9 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Password is incorrect");
           }
 
-          return user;
+          const { password, ...userWithoutPassword } = user.toObject();
+
+          return userWithoutPassword as NextAuthUser;
         } catch (error: unknown) {
           if (error instanceof Error) {
             throw new Error(error.message);
@@ -53,9 +59,6 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.name = user.name;
         token.profilePic = user.profilePic;
-        token.skills = user.skills;
-        token.currentFocus = user.currentFocus;
-        token.bio = user.bio;
       }
       return token;
     },
@@ -66,9 +69,6 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email;
         session.user.name = token.name;
         session.user.profilePic = token.profilePic;
-        session.user.skills = token.skills;
-        session.user.currentFocus = token.currentFocus;
-        session.user.bio = token.bio;
       }
       return session;
     },
