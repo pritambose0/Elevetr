@@ -39,9 +39,13 @@ export const authOptions: AuthOptions = {
             throw new Error("Password is incorrect");
           }
 
-          const { password, ...userWithoutPassword } = user.toObject();
+          const userObj = user.toObject() as {
+            password?: string;
+          } & NextAuthUser;
 
-          return userWithoutPassword as NextAuthUser;
+          delete userObj.password;
+
+          return userObj;
         } catch (error: unknown) {
           if (error instanceof Error) {
             throw new Error(error.message);

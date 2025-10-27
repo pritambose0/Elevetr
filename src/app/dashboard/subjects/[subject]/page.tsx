@@ -40,8 +40,8 @@ interface SubjectType {
   topics: Topic[];
 }
 
-export default function SubjectDetailsPage({
-  subject = {
+export default function SubjectDetailsPage() {
+  const subject: SubjectType = {
     name: "Data Structures",
     progress: 75,
     total: 20,
@@ -76,10 +76,8 @@ export default function SubjectDetailsPage({
         timeSpent: "45m",
       },
     ],
-  },
-}: {
-  subject: SubjectType;
-}) {
+  };
+
   const [topics, setTopics] = useState<Topic[]>(subject?.topics || []);
   const [newTitle, setNewTitle] = useState("");
   const [editingTitle, setEditingTitle] = useState(false);
